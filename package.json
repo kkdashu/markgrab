@@ -4,7 +4,8 @@
   "description": "A fast, intelligent web documentation scraper that converts website documentation into Markdown format",
   "type": "module",
   "bin": {
-    "markgrab": "./src/index.ts"
+    "markgrab": "./src/index.ts",
+    "markgrab-mcp": "./src/mcp/server.ts"
   },
   "files": [
     "src"
@@ -18,7 +19,9 @@
     "documentation",
     "web-scraping",
     "llms-txt",
-    "cli"
+    "cli",
+    "mcp",
+    "model-context-protocol"
   ],
   "author": "wmeng17@gmail.com",
   "license": "MIT",
@@ -37,9 +40,11 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.21.1",
     "cheerio": "^1.1.2",
     "p-limit": "^7.2.0",
     "toml": "^3.0.0",
-    "turndown": "^7.2.2"
+    "turndown": "^7.2.2",
+    "zod": "^3.24.1"
   }
 }

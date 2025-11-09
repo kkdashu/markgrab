@@ -267,6 +267,83 @@ Files are saved to `<output>/<domain>/` directory by default, for example:
 - URL: `https://bun.com/docs/installation`
 - Save location: `./bun.com/installation.md`
 
+## MCP Server Integration
+
+markgrab now supports the [Model Context Protocol (MCP)](https://modelcontextprotocol.io), allowing it to run as an MCP server so AI assistants (like Claude) can directly call documentation scraping functionality.
+
+### Configuring the MCP Server
+
+#### Using with Claude Code CLI
+
+Add to your project's `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "markgrab": {
+      "command": "bun",
+      "args": ["x", "markgrab-mcp"]
+    }
+  }
+}
+```
+
+### Available MCP Tools
+
+Once configured, AI assistants can use these tools:
+
+1. **`scrape_documentation`** - Scrape website documentation and convert to Markdown
+   - Auto-detect llms.txt support
+   - CSS selector link following
+   - Single page scraping
+   - Concurrent scraping with auto-retry
+
+2. **`preview_scrape`** - Preview pages to be scraped (without actually scraping)
+   - Validate selectors
+   - View list of pages to scrape
+   - Estimate scraping scope
+
+3. **`extract_links`** - Extract links from a page
+   - Use CSS selectors to extract links
+   - Return link titles and URLs
+   - Test selectors
+
+4. **`check_llms_txt`** - Check if a website has llms.txt
+   - Display documentation structure
+   - View link counts per section
+   - Identify optional sections
+
+5. **`analyze_html_structure`** - 🆕 AI-Powered HTML Structure Analysis
+   - Automatically analyze webpage HTML structure
+   - AI-powered recommendation of optimal CSS selectors
+   - Recognize common documentation frameworks (MkDocs, Docusaurus, Read the Docs, etc.)
+   - Returns suggested `contentAreaSelector` and `followLinksSelector`
+
+### Usage Examples
+
+Conversing with an AI assistant:
+
+```
+User: Help me scrape the Bun documentation
+AI: I'll help you scrape the Bun documentation...
+[Calls scrape_documentation tool]
+
+User: Preview which pages would be scraped first
+AI: Sure, let me preview that...
+[Calls preview_scrape tool]
+
+User: Does this site have llms.txt?
+AI: Let me check...
+[Calls check_llms_txt tool]
+
+User: Analyze https://docs.fastlane.tools/ and suggest the best selectors
+AI: Let me analyze the HTML structure of this website...
+[Calls analyze_html_structure tool]
+Based on the analysis, this is a Read the Docs themed site. I recommend:
+- contentAreaSelector: .wy-nav-content
+- followLinksSelector: .wy-menu-vertical a
+```
+
 ## Tech Stack
 
 - [Bun](https://bun.sh) - JavaScript runtime

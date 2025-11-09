@@ -398,15 +398,11 @@ export async function scrape(options: ScraperOptions): Promise<void> {
           // Dry-run 模式：只显示链接列表
           if (dryRun) {
             console.log(`\n将要抓取的页面 (共 ${links.length} 个):`);
-            const previewCount = Math.min(10, links.length);
-            for (let i = 0; i < previewCount; i++) {
+            for (let i = 0; i < links.length; i++) {
               const link = links[i];
               if (link) {
                 console.log(`  ${i + 1}. ${link.title} - ${link.url}`);
               }
-            }
-            if (links.length > 10) {
-              console.log(`  ... 还有 ${links.length - 10} 个页面\n`);
             }
             console.log(`\n📊 配置:`);
             console.log(`  内容选择器: ${contentAreaSelector}`);
@@ -455,15 +451,11 @@ export async function scrape(options: ScraperOptions): Promise<void> {
       // Dry-run 模式：只显示链接列表
       if (dryRun) {
         console.log(`\n将要抓取的页面 (共 ${links.length} 个):`);
-        const previewCount = Math.min(10, links.length);
-        for (let i = 0; i < previewCount; i++) {
+        for (let i = 0; i < links.length; i++) {
           const link = links[i];
           if (link) {
             console.log(`  ${i + 1}. ${link.title} - ${link.url}`);
           }
-        }
-        if (links.length > 10) {
-          console.log(`  ... 还有 ${links.length - 10} 个页面\n`);
         }
         console.log(`\n📊 配置:`);
         console.log(`  内容选择器: ${contentAreaSelector}`);

@@ -267,6 +267,84 @@ markgrab --url=https://bun.com/docs --follow='a[href^="/docs/"]'
 - URL: `https://bun.com/docs/installation`
 - 保存位置: `./bun.com/installation.md`
 
+## MCP 服务器集成
+
+markgrab 现已支持 [Model Context Protocol (MCP)](https://modelcontextprotocol.io)，可以作为 MCP 服务器运行，让 AI 助手（如 Claude）直接调用文档抓取功能。
+
+### 配置 MCP 服务器
+
+#### 在 Claude Code CLI 中使用
+
+在项目的 `.mcp.json` 中添加：
+
+```json
+{
+  "mcpServers": {
+    "markgrab": {
+      "command": "bun",
+      "args": ["x", "markgrab-mcp"]
+    }
+  }
+}
+```
+
+### 可用的 MCP 工具
+
+配置完成后，AI 助手可以使用以下工具：
+
+1. **`scrape_documentation`** - 抓取网站文档并转换为 Markdown
+   - 支持自动检测 llms.txt
+   - 支持 CSS 选择器跟随链接
+   - 支持单页抓取
+   - 并发抓取，自动重试
+
+2. **`preview_scrape`** - 预览将要抓取的页面（不实际抓取）
+   - 验证选择器是否正确
+   - 查看将要抓取的页面列表
+   - 估算抓取范围
+
+3. **`extract_links`** - 从页面提取链接
+   - 使用 CSS 选择器提取链接
+   - 返回链接标题和 URL
+   - 测试选择器
+
+4. **`check_llms_txt`** - 检查网站是否有 llms.txt
+   - 显示文档结构
+   - 查看各部分的链接数量
+   - 识别可选部分
+
+5. **`analyze_html_structure`** - 🆕 AI 驱动的 HTML 结构分析
+   - 自动分析网页 HTML 结构
+   - AI 智能推荐最佳 CSS 选择器
+   - 识别常见文档框架（MkDocs、Docusaurus、Read the Docs 等）
+   - 返回 `contentAreaSelector` 和 `followLinksSelector` 建议
+
+### 使用示例
+
+与 AI 助手对话：
+
+```
+用户: 帮我抓取 Bun 的文档
+AI: 我来帮你抓取 Bun 的文档...
+[调用 scrape_documentation 工具]
+
+用户: 先预览一下会抓取哪些页面
+AI: 好的，我先预览一下...
+[调用 preview_scrape 工具]
+
+用户: 这个网站有 llms.txt 吗？
+AI: 让我检查一下...
+[调用 check_llms_txt 工具]
+
+用户: 帮我分析一下 https://docs.fastlane.tools/ 应该用什么选择器
+AI: 我来分析这个网站的 HTML 结构...
+[调用 analyze_html_structure 工具]
+根据分析，这是一个 Read the Docs 主题的网站，建议使用：
+- contentAreaSelector: .wy-nav-content
+- followLinksSelector: .wy-menu-vertical a
+```
+
+
 ## 技术栈
 
 - [Bun](https://bun.sh) - JavaScript 运行时
