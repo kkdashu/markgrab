@@ -1,0 +1,22 @@
+{
+  "name": "markgrab",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/turndown": "^5.0.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2",
+    "p-limit": "^7.2.0",
+    "toml": "^3.0.0",
+    "turndown": "^7.2.2"
+  }
+}

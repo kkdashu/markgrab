@@ -1,0 +1,232 @@
+# markgrab
+
+[English](./README-en.md) | 简体中文
+
+一个快速、智能的网页文档抓取工具，将网站文档转换为 Markdown 格式。
+
+## ✨ 核心特性
+
+- 🤖 **智能抓取**: 自动检测 [llms.txt](https://llmstxt.org) 或使用 CSS 选择器
+- ⚡ **高性能**: 并发抓取 + 进度显示 + 自动重试
+- 📝 **原生 Markdown**: 优先获取 `.md` 源文件，失败自动转换 HTML
+- 🎯 **三种模式**: 自动选择 llms.txt / 跟随链接 / 单页模式
+- ⚙️ **灵活配置**: 支持 TOML 配置文件和命令行参数
+
+## 快速开始
+
+```bash
+# 安装依赖
+bun install
+
+# 最简单的用法 - 抓取单页
+bun src/index.ts --url=https://bun.com/docs/installation
+
+# 自动检测 llms.txt - 抓取整站（推荐）
+bun src/index.ts --url=https://bun.com/docs
+
+# 使用 CSS 选择器 - 抓取多页
+bun src/index.ts --url=https://bun.com/docs --follow='a[href^="/docs/"]'
+```
+
+## 使用指南
+
+### 基础用法
+
+```bash
+bun src/index.ts --url=<url> [选项]
+```
+
+**常用选项：**
+
+| 选项 | 说明 | 示例 |
+|------|------|------|
+| `--url=<url>` | 要抓取的 URL（必需） | `--url=https://bun.com/docs` |
+| `--follow=<selector>` | CSS 选择器，跟随链接抓取 | `--follow='nav a'` |
+| `--content=<selector>` | 内容区域选择器（默认 `body`） | `--content=main` |
+| `--output=<dir>` | 输出目录（默认 `./`） | `--output=./docs` |
+| `--dry-run` | 预览模式，不实际抓取 | - |
+| `--config=<path>` | 配置文件路径 | `--config=config.toml` |
+
+**高级选项：**
+
+| 选项 | 说明 |
+|------|------|
+| `--no-native-md` | 禁用原生 Markdown，强制 HTML 转换 |
+| `--no-llms-txt` | 禁用 llms.txt 自动检测 |
+| `--include-optional` | 包含 llms.txt 中的 Optional 部分 |
+| `--help`, `-h` | 显示帮助信息 |
+
+### 抓取规则
+
+工具按以下优先级自动选择抓取方式：
+
+1. **llms.txt 模式** → 如果检测到 `llms.txt`
+2. **跟随链接模式** → 如果设置了 `--follow`
+3. **单页模式** → 其他情况
+
+### 使用示例
+
+#### 1. 预览模式（推荐先预览）
+
+```bash
+bun src/index.ts --url=https://bun.com/docs --dry-run
+```
+
+显示将要抓取的内容，不实际下载。
+
+#### 2. 自动检测 llms.txt
+
+```bash
+bun src/index.ts --url=https://hono.dev/docs
+```
+
+如果网站提供 llms.txt，自动使用它获取文档结构。
+
+#### 3. 使用 CSS 选择器
+
+```bash
+bun src/index.ts --url=https://bun.com/docs \
+  --follow='a[href^="/docs/"]' \
+  --content=main \
+  --output=./my_docs
+```
+
+#### 4. 使用配置文件
+
+创建 `config.toml`：
+
+```toml
+["bun.com"]
+followLinksSelector = "a[href^='/docs/']"
+contentAreaSelector = "main"
+outputDir = "./docs"
+useNativeMd = true
+useLlmsTxt = true
+includeOptional = false
+
+["hono.dev"]
+followLinksSelector = "nav a"
+contentAreaSelector = "article"
+outputDir = "./docs"
+```
+
+使用配置：
+
+```bash
+bun src/index.ts --url=https://bun.com/docs --config=config.toml
+```
+
+**配置优先级**: CLI 参数 > 配置文件 > 默认值
+
+## 性能特性
+
+### 进度显示
+
+抓取时实时显示进度条和统计：
+
+```
+🚀 开始抓取 296 个文档...
+
+[████████████░░░░░░░░] 60% (178/296) | ✅ 176 ❌ 2 ⏳ 10
+
+=== 抓取完成 ===
+总计: 296 个页面
+✅ 成功: 294
+❌ 失败: 2
+⏱️  耗时: 8.1s
+```
+
+### 自动重试
+
+网络请求失败时自动重试（默认 3 次），使用指数退避策略。
+
+### 并发控制
+
+默认最多 10 个并发请求，避免对目标网站造成压力。
+
+## 配置文件
+
+### 可配置选项
+
+| 配置项 | 类型 | 说明 |
+|--------|------|------|
+| `followLinksSelector` | string | 跟随链接的 CSS 选择器 |
+| `contentAreaSelector` | string | 内容区域选择器 |
+| `outputDir` | string | 输出目录 |
+| `useNativeMd` | boolean | 是否尝试原生 Markdown（默认 `true`） |
+| `useLlmsTxt` | boolean | 是否自动检测 llms.txt（默认 `true`） |
+| `includeOptional` | boolean | 是否包含 Optional 部分（默认 `false`） |
+
+### 配置文件示例
+
+参考 `config.example.toml`：
+
+```toml
+["bun.com"]
+followLinksSelector = "a[href^='/docs/']"
+contentAreaSelector = "main"
+outputDir = "./output_docs"
+useNativeMd = true
+useLlmsTxt = true
+includeOptional = false
+
+["hono.dev"]
+followLinksSelector = "nav a"
+contentAreaSelector = "article"
+outputDir = "./output_docs"
+useNativeMd = true
+useLlmsTxt = true
+includeOptional = false
+
+# 单页模式示例
+["example.com"]
+contentAreaSelector = "body"
+outputDir = "./output_docs"
+useNativeMd = true
+useLlmsTxt = false
+```
+
+## 常见问题
+
+### 如何查看将要抓取什么？
+
+使用 `--dry-run` 预览：
+
+```bash
+bun src/index.ts --url=https://bun.com/docs --dry-run
+```
+
+### 如何只抓取主要内容区域？
+
+使用 `--content` 指定选择器：
+
+```bash
+bun src/index.ts --url=https://example.com --content=article
+```
+
+### 如何抓取整个文档站点？
+
+使用 `--follow` 指定链接选择器：
+
+```bash
+bun src/index.ts --url=https://bun.com/docs --follow='a[href^="/docs/"]'
+```
+
+### 文件保存在哪里？
+
+默认保存到 `<output>/<域名>/` 目录下，例如：
+
+- 输出目录: `./` (默认)
+- URL: `https://bun.com/docs/installation`
+- 保存位置: `./bun.com/installation.md`
+
+## 技术栈
+
+- [Bun](https://bun.sh) - JavaScript 运行时
+- [Cheerio](https://cheerio.js.org) - HTML 解析
+- [Turndown](https://github.com/mixmark-io/turndown) - HTML 转 Markdown
+- [p-limit](https://github.com/sindresorhus/p-limit) - 并发控制
+
+## License
+
+MIT
