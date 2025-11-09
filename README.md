@@ -12,20 +12,65 @@
 - 🎯 **三种模式**: 自动选择 llms.txt / 跟随链接 / 单页模式
 - ⚙️ **灵活配置**: 支持 TOML 配置文件和命令行参数
 
-## 快速开始
+## 安装
+
+### 前置要求
+
+本工具基于 [Bun](https://bun.sh) 运行时构建，使用前需要先安装 Bun：
 
 ```bash
+# macOS / Linux / WSL
+curl -fsSL https://bun.sh/install | bash
+
+# Windows (PowerShell)
+powershell -c "irm bun.sh/install.ps1|iex"
+```
+
+### 使用方式
+
+#### 方式 1: 使用 npx（推荐）
+
+无需安装，直接运行：
+
+```bash
+npx markgrab --url=https://bun.com/docs
+```
+
+#### 方式 2: 全局安装
+
+```bash
+# 全局安装
+bun add -g markgrab
+
+# 然后直接使用
+markgrab --url=https://bun.com/docs
+```
+
+#### 方式 3: 本地开发
+
+```bash
+# 克隆仓库
+git clone <repository-url>
+cd markgrab
+
 # 安装依赖
 bun install
 
+# 运行
+bun src/index.ts --url=https://bun.com/docs
+```
+
+## 快速开始
+
+```bash
 # 最简单的用法 - 抓取单页
-bun src/index.ts --url=https://bun.com/docs/installation
+npx markgrab --url=https://bun.com/docs/installation
 
 # 自动检测 llms.txt - 抓取整站（推荐）
-bun src/index.ts --url=https://bun.com/docs
+npx markgrab --url=https://bun.com/docs
 
 # 使用 CSS 选择器 - 抓取多页
-bun src/index.ts --url=https://bun.com/docs --follow='a[href^="/docs/"]'
+npx markgrab --url=https://bun.com/docs --follow='a[href^="/docs/"]'
 ```
 
 ## 使用指南
@@ -33,7 +78,9 @@ bun src/index.ts --url=https://bun.com/docs --follow='a[href^="/docs/"]'
 ### 基础用法
 
 ```bash
-bun src/index.ts --url=<url> [选项]
+markgrab --url=<url> [选项]
+# 或使用 npx
+npx markgrab --url=<url> [选项]
 ```
 
 **常用选项：**
@@ -69,7 +116,7 @@ bun src/index.ts --url=<url> [选项]
 #### 1. 预览模式（推荐先预览）
 
 ```bash
-bun src/index.ts --url=https://bun.com/docs --dry-run
+markgrab --url=https://bun.com/docs --dry-run
 ```
 
 显示将要抓取的内容，不实际下载。
@@ -77,7 +124,7 @@ bun src/index.ts --url=https://bun.com/docs --dry-run
 #### 2. 自动检测 llms.txt
 
 ```bash
-bun src/index.ts --url=https://hono.dev/docs
+markgrab --url=https://hono.dev/docs
 ```
 
 如果网站提供 llms.txt，自动使用它获取文档结构。
@@ -85,7 +132,7 @@ bun src/index.ts --url=https://hono.dev/docs
 #### 3. 使用 CSS 选择器
 
 ```bash
-bun src/index.ts --url=https://bun.com/docs \
+markgrab --url=https://bun.com/docs \
   --follow='a[href^="/docs/"]' \
   --content=main \
   --output=./my_docs
@@ -113,7 +160,7 @@ outputDir = "./docs"
 使用配置：
 
 ```bash
-bun src/index.ts --url=https://bun.com/docs --config=config.toml
+markgrab --url=https://bun.com/docs --config=config.toml
 ```
 
 **配置优先级**: CLI 参数 > 配置文件 > 默认值
@@ -193,7 +240,7 @@ useLlmsTxt = false
 使用 `--dry-run` 预览：
 
 ```bash
-bun src/index.ts --url=https://bun.com/docs --dry-run
+markgrab --url=https://bun.com/docs --dry-run
 ```
 
 ### 如何只抓取主要内容区域？
@@ -201,7 +248,7 @@ bun src/index.ts --url=https://bun.com/docs --dry-run
 使用 `--content` 指定选择器：
 
 ```bash
-bun src/index.ts --url=https://example.com --content=article
+markgrab --url=https://example.com --content=article
 ```
 
 ### 如何抓取整个文档站点？
@@ -209,7 +256,7 @@ bun src/index.ts --url=https://example.com --content=article
 使用 `--follow` 指定链接选择器：
 
 ```bash
-bun src/index.ts --url=https://bun.com/docs --follow='a[href^="/docs/"]'
+markgrab --url=https://bun.com/docs --follow='a[href^="/docs/"]'
 ```
 
 ### 文件保存在哪里？

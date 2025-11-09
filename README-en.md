@@ -12,20 +12,65 @@ A fast, intelligent web documentation scraper that converts website documentatio
 - 🎯 **Three Modes**: Auto-select llms.txt / follow links / single page mode
 - ⚙️ **Flexible Configuration**: Support TOML config files and CLI arguments
 
-## Quick Start
+## Installation
+
+### Prerequisites
+
+This tool is built on the [Bun](https://bun.sh) runtime. You need to install Bun first:
 
 ```bash
+# macOS / Linux / WSL
+curl -fsSL https://bun.sh/install | bash
+
+# Windows (PowerShell)
+powershell -c "irm bun.sh/install.ps1|iex"
+```
+
+### Usage Options
+
+#### Option 1: Using npx (Recommended)
+
+No installation required, run directly:
+
+```bash
+npx markgrab --url=https://bun.com/docs
+```
+
+#### Option 2: Global Installation
+
+```bash
+# Install globally
+bun add -g markgrab
+
+# Then use directly
+markgrab --url=https://bun.com/docs
+```
+
+#### Option 3: Local Development
+
+```bash
+# Clone repository
+git clone https://github.com/kkdashu/markgrab
+cd markgrab
+
 # Install dependencies
 bun install
 
+# Run
+bun src/index.ts --url=https://bun.com/docs
+```
+
+## Quick Start
+
+```bash
 # Simplest usage - scrape a single page
-bun src/index.ts --url=https://bun.com/docs/installation
+npx markgrab --url=https://bun.com/docs/installation
 
 # Auto-detect llms.txt - scrape entire site (recommended)
-bun src/index.ts --url=https://bun.com/docs
+npx markgrab --url=https://bun.com/docs
 
 # Use CSS selector - scrape multiple pages
-bun src/index.ts --url=https://bun.com/docs --follow='a[href^="/docs/"]'
+npx markgrab --url=https://bun.com/docs --follow='a[href^="/docs/"]'
 ```
 
 ## Usage Guide
@@ -33,7 +78,9 @@ bun src/index.ts --url=https://bun.com/docs --follow='a[href^="/docs/"]'
 ### Basic Usage
 
 ```bash
-bun src/index.ts --url=<url> [options]
+markgrab --url=<url> [options]
+# Or using npx
+npx markgrab --url=<url> [options]
 ```
 
 **Common Options:**
@@ -69,7 +116,7 @@ The tool automatically selects the scraping method in the following priority:
 #### 1. Preview Mode (recommended to preview first)
 
 ```bash
-bun src/index.ts --url=https://bun.com/docs --dry-run
+markgrab --url=https://bun.com/docs --dry-run
 ```
 
 Shows what will be scraped without actually downloading.
@@ -77,7 +124,7 @@ Shows what will be scraped without actually downloading.
 #### 2. Auto-detect llms.txt
 
 ```bash
-bun src/index.ts --url=https://hono.dev/docs
+markgrab --url=https://hono.dev/docs
 ```
 
 If the website provides llms.txt, automatically use it to get documentation structure.
@@ -85,7 +132,7 @@ If the website provides llms.txt, automatically use it to get documentation stru
 #### 3. Use CSS Selectors
 
 ```bash
-bun src/index.ts --url=https://bun.com/docs \
+markgrab --url=https://bun.com/docs \
   --follow='a[href^="/docs/"]' \
   --content=main \
   --output=./my_docs
@@ -113,7 +160,7 @@ outputDir = "./docs"
 Use the config:
 
 ```bash
-bun src/index.ts --url=https://bun.com/docs --config=config.toml
+markgrab --url=https://bun.com/docs --config=config.toml
 ```
 
 **Configuration Priority**: CLI arguments > Config file > Default values
@@ -193,7 +240,7 @@ useLlmsTxt = false
 Use `--dry-run` to preview:
 
 ```bash
-bun src/index.ts --url=https://bun.com/docs --dry-run
+markgrab --url=https://bun.com/docs --dry-run
 ```
 
 ### How to scrape only the main content area?
@@ -201,7 +248,7 @@ bun src/index.ts --url=https://bun.com/docs --dry-run
 Use `--content` to specify a selector:
 
 ```bash
-bun src/index.ts --url=https://example.com --content=article
+markgrab --url=https://example.com --content=article
 ```
 
 ### How to scrape an entire documentation site?
@@ -209,7 +256,7 @@ bun src/index.ts --url=https://example.com --content=article
 Use `--follow` to specify a link selector:
 
 ```bash
-bun src/index.ts --url=https://bun.com/docs --follow='a[href^="/docs/"]'
+markgrab --url=https://bun.com/docs --follow='a[href^="/docs/"]'
 ```
 
 ### Where are files saved?

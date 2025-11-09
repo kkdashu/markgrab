@@ -1,0 +1,37 @@
+# 开发文件
+tsconfig.json
+.gitignore
+.git
+
+# 测试和示例
+*.test.ts
+__tests__
+
+# 文档和配置示例
+CLAUDE.md
+config.toml
+config.example.toml
+
+# 输出目录
+ai-docs
+out
+dist
+*.tgz
+
+# IDE
+.idea
+.vscode
+.DS_Store
+
+# 日志
+logs
+*.log
+
+# 环境变量
+.env*
+
+# 缓存
+.cache
+.eslintcache
+*.tsbuildinfo
+node_modules

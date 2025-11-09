@@ -1,10 +1,33 @@
 {
   "name": "markgrab",
-  "module": "src/index.ts",
+  "version": "0.1.0",
+  "description": "A fast, intelligent web documentation scraper that converts website documentation into Markdown format",
   "type": "module",
-  "private": true,
+  "bin": {
+    "markgrab": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
   "scripts": {
     "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "scraper",
+    "markdown",
+    "documentation",
+    "web-scraping",
+    "llms-txt",
+    "cli"
+  ],
+  "author": "wmeng17@gmail.com",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kkdashu/markgrab"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
