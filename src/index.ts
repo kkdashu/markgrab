@@ -8,8 +8,18 @@ import { parseArgs, showHelp, cliArgsToScraperOptions } from './cli';
  */
 async function main() {
   try {
+    const args = Bun.argv.slice(2);
+
+    // 检查是否是 mcp 子命令
+    if (args[0] === 'mcp') {
+      // 动态导入并启动 MCP server
+      const { default: startMcpServer } = await import('./mcp/server.ts');
+      await startMcpServer();
+      return;
+    }
+
     // 解析命令行参数 (现在是 async)
-    const cliArgs = await parseArgs(Bun.argv.slice(2));
+    const cliArgs = await parseArgs(args);
 
     // 如果需要显示帮助,则显示后退出
     if (cliArgs.showHelp) {

@@ -281,8 +281,8 @@ Add to your project's `.mcp.json`:
 {
   "mcpServers": {
     "markgrab": {
-      "command": "bun",
-      "args": ["x", "markgrab-mcp"]
+      "command": "npx",
+      "args": ["markgrab", "mcp"]
     }
   }
 }

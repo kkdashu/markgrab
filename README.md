@@ -281,8 +281,8 @@ markgrab 现已支持 [Model Context Protocol (MCP)](https://modelcontextprotoco
 {
   "mcpServers": {
     "markgrab": {
-      "command": "bun",
-      "args": ["x", "markgrab-mcp"]
+      "command": "npx",
+      "args": ["markgrab", "mcp"]
     }
   }
 }

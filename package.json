@@ -1,11 +1,10 @@
 {
   "name": "markgrab",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A fast, intelligent web documentation scraper that converts website documentation into Markdown format",
   "type": "module",
   "bin": {
-    "markgrab": "./src/index.ts",
-    "markgrab-mcp": "./src/mcp/server.ts"
+    "markgrab": "./src/index.ts"
   },
   "files": [
     "src"

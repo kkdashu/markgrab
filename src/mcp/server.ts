@@ -49,8 +49,13 @@ async function main() {
   console.error('Markgrab MCP server started');
 }
 
-// Run the server
-main().catch((error) => {
-  console.error('Fatal error in MCP server:', error);
-  process.exit(1);
-});
+// Export as default for dynamic import
+export default main;
+
+// If running directly (not imported), start the server
+if (import.meta.main) {
+  main().catch((error) => {
+    console.error('Fatal error in MCP server:', error);
+    process.exit(1);
+  });
+}
