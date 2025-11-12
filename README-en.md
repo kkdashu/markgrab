@@ -2,6 +2,8 @@
 
 English | [简体中文](./README.md)
 
+![markgrab screenshot](./screenshots/markgrab-screenshot.jpg)
+
 When developing features with `Claude Code` or `Codex`, the lack of accurate documentation often leads to either not using the most elegant implementation approach, or making up APIs.
 
 For `Claude Code`, the best approach is to put the complete documentation in a project directory, tell the AI the location, and let it look it up itself.

@@ -2,6 +2,8 @@
 
 [English](./README-en.md) | 简体中文
 
+![markgrab screenshot](./screenshots/markgrab-screenshot.jpg)
+
 使用 `Claude Code` 或者 `Codex` 开发功能时，经常会因为没有准确的文档而导致要么没有使用最优雅的方式实现，要么乱编API。
 
 而针对 `Claude Code` 最好的方式是把文档完整的放到项目某个目录下，告诉AI地址，让它自己去查。
